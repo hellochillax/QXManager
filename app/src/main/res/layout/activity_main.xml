@@ -56,8 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:focusable="true"
-                android:nextFocusDown="@+id/main_community"
-                android:nextFocusRight="@+id/main_healthy"
+                android:nextFocusDown="@+id/main_service"
+                android:nextFocusLeft="@id/main_healthy"
                 android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
     </LinearLayout>
@@ -79,8 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:focusable="true"
-                android:nextFocusDown="@+id/main_community"
-                android:nextFocusRight="@+id/main_healthy"
+                android:nextFocusUp="@id/main_security"
+                android:nextFocusRight="@+id/main_shop"
                 android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
 
@@ -95,8 +95,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:focusable="true"
-                android:nextFocusDown="@+id/main_community"
-                android:nextFocusRight="@+id/main_healthy"
+                android:nextFocusUp="@id/main_healthy"
+                android:nextFocusRight="@+id/main_service"
+                android:nextFocusLeft="@id/main_community"
                 android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
 
@@ -111,8 +112,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:focusable="true"
-                android:nextFocusDown="@+id/main_community"
-                android:nextFocusRight="@+id/main_healthy"
+                android:nextFocusUp="@id/main_video"
+                android:nextFocusLeft="@id/main_shop"
                 android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
     </LinearLayout>

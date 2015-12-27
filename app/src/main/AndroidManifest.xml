@@ -25,7 +25,6 @@
         android:name=".activity.App"
         android:theme="@style/AppTheme">
 
-        //用于sdk中间页显示，包含登录、设备添加、设备操作等页面
         <activity android:name=".activity.SplashAty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +33,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.SecurityAty"/>
+        <activity android:name=".activity.HealthyAty"/>
 
+        //用于sdk中间页显示，包含登录、设备添加、设备操作等页面
         <activity
             android:name="com.videogo.main.EzvizWebViewActivity"
             android:configChanges="orientation|keyboardHidden"
