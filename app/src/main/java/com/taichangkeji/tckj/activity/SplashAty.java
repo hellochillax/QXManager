@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.taichangkeji.tckj.R;
 import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.openapi.EZOpenSDK;
+import com.videogo.openapi.bean.EZAccessToken;
 
 /**
  * Created by MAC on 15/12/26.
@@ -18,12 +19,14 @@ public class SplashAty extends BaseActivity {
 
     @Override
     protected void initViews() {
-        if(UserUtils.getAccessToken(this)!=null){
+        EZAccessToken token=UserUtils.getAccessToken(this);
+        if(token!=null){
+            EZOpenSDK.getInstance().setAccessToken(token.getAccessToken());
             startActivity(new Intent(this, MainActivity.class));
-            onBackPressed();
         }else{
             EZOpenSDK.getInstance().openLoginPage();
         }
+        onBackPressed();
     }
 
     @Override

@@ -4,7 +4,6 @@ package com.taichangkeji.tckj.activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.taichangkeji.tckj.R;
 
@@ -13,8 +12,6 @@ import butterknife.OnClick;
 import butterknife.OnFocusChange;
 
 public class MainActivity extends BaseActivity{
-
-    final int OFFSET_FOCUS_SIZE_CHANGE = 150;
 
     @Bind(R.id.main_security)
     ImageView mSecurity;
@@ -29,11 +26,6 @@ public class MainActivity extends BaseActivity{
     @Bind(R.id.main_service)
     ImageView mService;
 
-    @OnFocusChange({R.id.main_security,R.id.main_healthy,R.id.main_video,R.id.main_community,R.id.main_shop,R.id.main_service})
-    void on_focus_change(View v,boolean focus){
-        onFocusChange(v,focus);
-    }
-
     @OnClick(R.id.main_security)
     void to_security(){
         openSecurityAty();
@@ -41,6 +33,12 @@ public class MainActivity extends BaseActivity{
     @OnClick(R.id.main_healthy)
     void to_healthy(){
         openHealthyAty();
+    }
+    @OnClick(R.id.main_video)
+    void to_video(){openVideoAty();}
+
+    private void openVideoAty() {
+        startActivity(new Intent(this,VideoAty.class));
     }
 
     private void openHealthyAty() {
@@ -58,17 +56,8 @@ public class MainActivity extends BaseActivity{
 
     @Override
     protected void initViews() {
-        initListeners();
     }
 
-    private void initListeners() {
-        mSecurity.post(new Runnable() {
-            @Override
-            public void run() {
-                mSecurity.requestFocus();
-            }
-        });
-    }
 
     @Override
     protected int initLayoutRes() {
@@ -80,17 +69,59 @@ public class MainActivity extends BaseActivity{
 
     }
 
-    private void onFocusChange(View v, boolean hasFocus) {
-        RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) v.getLayoutParams();
-        if (hasFocus) {
-            lp.width=v.getWidth() + OFFSET_FOCUS_SIZE_CHANGE;
-            lp.height=v.getHeight() + OFFSET_FOCUS_SIZE_CHANGE;
-
-        } else {
-            lp.width=v.getWidth() - OFFSET_FOCUS_SIZE_CHANGE;
-            lp.height=v.getHeight() - OFFSET_FOCUS_SIZE_CHANGE;
+    @OnFocusChange(R.id.main_security)
+    void main_security(View v,boolean b){
+        ImageView iv= (ImageView) v;
+        if(b){
+            iv.setImageResource(R.mipmap.security_highlighted);
+        }else {
+            iv.setImageResource(R.mipmap.security);
         }
-        v.requestLayout();
+    }
+    @OnFocusChange(R.id.main_healthy)
+    void main_healthy(View v,boolean b){
+        ImageView iv= (ImageView) v;
+        if(b){
+            iv.setImageResource(R.mipmap.healthy_highlighted);
+        }else {
+            iv.setImageResource(R.mipmap.healthy);
+        }
+    }
+    @OnFocusChange(R.id.main_community)
+    void main_community(View v,boolean b){
+        ImageView iv= (ImageView) v;
+        if(b){
+            iv.setImageResource(R.mipmap.community_highlighted);
+        }else {
+            iv.setImageResource(R.mipmap.community);
+        }
+    }
+    @OnFocusChange(R.id.main_shop)
+    void main_shop(View v,boolean b){
+        ImageView iv= (ImageView) v;
+        if(b){
+            iv.setImageResource(R.mipmap.shop_highlighted);
+        }else {
+            iv.setImageResource(R.mipmap.shop);
+        }
+    }
+    @OnFocusChange(R.id.main_service)
+    void main_service(View v,boolean b){
+        ImageView iv= (ImageView) v;
+        if(b){
+            iv.setImageResource(R.mipmap.service_highlighted);
+        }else {
+            iv.setImageResource(R.mipmap.service);
+        }
+    }
+    @OnFocusChange(R.id.main_video)
+    void main_video(View v,boolean b){
+        ImageView iv= (ImageView) v;
+        if(b){
+            iv.setImageResource(R.mipmap.video_highlighted);
+        }else {
+            iv.setImageResource(R.mipmap.video);
+        }
     }
 
 }
