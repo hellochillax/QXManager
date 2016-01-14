@@ -2,5 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="60sp"
+        android:textColor="@android:color/holo_green_light"
+        android:text="Welcome to 泰昌科技"/>
 </LinearLayout>

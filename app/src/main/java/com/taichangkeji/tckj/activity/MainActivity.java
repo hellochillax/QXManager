@@ -13,19 +13,6 @@ import butterknife.OnFocusChange;
 
 public class MainActivity extends BaseActivity{
 
-    @Bind(R.id.main_security)
-    ImageView mSecurity;
-    @Bind(R.id.main_healthy)
-    ImageView mHealthy;
-    @Bind(R.id.main_video)
-    ImageView mVideo;
-    @Bind(R.id.main_community)
-    ImageView mCommunity;
-    @Bind(R.id.main_shop)
-    ImageView mShop;
-    @Bind(R.id.main_service)
-    ImageView mService;
-
     @OnClick(R.id.main_security)
     void to_security(){
         openSecurityAty();
