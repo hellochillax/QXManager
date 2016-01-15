@@ -24,4 +24,16 @@ public class UserUtils {
         token.setExpire(str2);
         return token;
     }
+    public static void setFamilyId(Context context,String id){
+        context.getSharedPreferences(TOKEN,0).edit().putString("familyId",id).commit();
+    }
+    public static String getFamilyId(Context context){
+        return context.getSharedPreferences(TOKEN,0).getString("familyId",null);
+    }
+    public static void setFamilyName(Context context,String name){
+        context.getSharedPreferences(TOKEN,0).edit().putString("familyName",name).commit();
+    }
+    public static String getFamilyName(Context context){
+        return context.getSharedPreferences(TOKEN,0).getString("familyName",null);
+    }
 }

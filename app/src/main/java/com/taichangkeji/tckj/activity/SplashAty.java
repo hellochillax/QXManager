@@ -1,14 +1,16 @@
 package com.taichangkeji.tckj.activity;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
 import com.taichangkeji.tckj.R;
+import com.taichangkeji.tckj.config.Config;
 import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZAccessToken;
+
+import java.io.File;
 
 /**
  * Created by MAC on 15/12/26.
@@ -24,20 +26,19 @@ public class SplashAty extends BaseActivity {
 
     @Override
     protected void initDatas() {
+        File file=new File(Config.cachePath);
+        if(!file.exists()){
+            file.mkdirs();
+        }
     }
 
     @Override
     protected void initViews() {
-        //初始化蓝牙模块
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(!mBluetoothAdapter.isEnabled()){
-            mBluetoothAdapter.enable();
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(500);
                     mHandler.obtainMessage().sendToTarget();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

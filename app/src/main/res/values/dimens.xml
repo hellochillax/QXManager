@@ -2,4 +2,17 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="activity_padding">40dp</dimen>
+
+
+    //HealthyAty
+    <dimen name="title2_margin_title">30dp</dimen>
+    <dimen name="bottom_line_height">60dp</dimen>
+    <dimen name="bottom_line_width">140dp</dimen>
+
+    //AddMumberAty
+    <dimen name="icon_size">120dp</dimen>
+    <dimen name="ok_width">200dp</dimen>
+    <dimen name="ok_height">60dp</dimen>
 </resources>

@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.taichangkeji.tckj">
     <uses-sdk android:minSdkVersion="14" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -24,8 +21,6 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -45,6 +40,9 @@
         <activity android:name=".activity.SecurityAty"/>
         <activity android:name=".activity.HealthyAty"/>
         <activity android:name=".activity.VideoAty"/>
+        <activity android:name=".activity.AddMumberAty"/>
+        <activity android:name=".activity.MeasureAty"/>
+        <activity android:name=".activity.ZoomImage"/>
 
         //用于sdk中间页显示，包含登录、设备添加、设备操作等页面
         <activity

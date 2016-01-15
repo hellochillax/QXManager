@@ -25,4 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('libs/EZOpenSDK.jar')
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.uwetrottmann.photoview:library:1.2.4'
 }
