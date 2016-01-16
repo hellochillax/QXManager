@@ -14,6 +14,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false;
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,4 +28,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.uwetrottmann.photoview:library:1.2.4'
+    compile 'org.apache.httpcomponents:httpcomponents-client:4.5.1'
 }

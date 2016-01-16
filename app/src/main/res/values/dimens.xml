@@ -4,15 +4,21 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="activity_padding">40dp</dimen>
-
+    <dimen name="system_default_text_size">40sp</dimen>
 
     //HealthyAty
     <dimen name="title2_margin_title">30dp</dimen>
     <dimen name="bottom_line_height">60dp</dimen>
     <dimen name="bottom_line_width">140dp</dimen>
+    <dimen name="user_icon_size">40dp</dimen>
 
     //AddMumberAty
     <dimen name="icon_size">120dp</dimen>
     <dimen name="ok_width">200dp</dimen>
     <dimen name="ok_height">60dp</dimen>
+
+    //MeasureAty
+    <dimen name="measure_icon_size">180dp</dimen>
+    <dimen name="measure_name_size">50sp</dimen>
+
 </resources>

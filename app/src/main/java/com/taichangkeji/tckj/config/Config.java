@@ -16,6 +16,7 @@ public class Config {
     public static final String getHealthUsers=localhost+"/beitai/getHealthUsers?";//获取家属列表
     public static final String addHealthUser=localhost+"/beitai/addHealthUser?";//添加家属成员
     public static final String delHealthUser=localhost+"/beitai/delHealthUser?";//删除家属成员
+    public static final String getUserIconPre=localhost+"/uploads/";
 
 
     public static final String cachePath= Environment.getExternalStorageDirectory()+"/TCKJ/caches";

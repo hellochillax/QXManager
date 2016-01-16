@@ -9,6 +9,24 @@
     </style>
 
 
+    //Common
+    <style name="exit_dialog_style" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@drawable/exit_dialog_bg</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+    <style name="exit_dialog_button">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">100dp</item>
+    </style>
+    <style name="exit_dialog_title" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">60sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">80dp</item>
+    </style>
 
     //HealthyAty
     <style name="aty_healthy_list_title2" parent="android:Widget.TextView">
@@ -51,4 +69,28 @@
         <attr name="stroke" format="dimension" />
         <attr name="color_" format="string" />
     </declare-styleable>
+
+
+    //MeasureAty
+    <style name="normal_text_style" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+    <style name="large_text_style" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+    <declare-styleable name="MeasureIndicator">
+        <attr name="left_max_count" format="float"/>
+        <attr name="right_max_count" format="float"/>
+    </declare-styleable>
+
 </resources>

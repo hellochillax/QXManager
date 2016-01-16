@@ -12,7 +12,16 @@ import com.taichangkeji.tckj.R;
 import com.taichangkeji.tckj.config.Config;
 import com.taichangkeji.tckj.model.Member;
 import com.taichangkeji.tckj.utils.CommonUtils;
+import com.taichangkeji.tckj.utils.LogUtils;
+import com.taichangkeji.tckj.utils.UploadUtil;
+import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.universalimageloader.core.ImageLoader;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -43,6 +52,10 @@ public class AddMumberAty extends BaseActivity {
 
     @OnClick(R.id.submit)
     void c_submit() {
+        mName.setText("C");
+        mSex.setText("C");
+        mAge.setText("19");
+        mRelation.setText("10");
         String name = mName.getText().toString();
         String sex = mSex.getText().toString();
         String age = mAge.getText().toString();
@@ -58,7 +71,7 @@ public class AddMumberAty extends BaseActivity {
         } else if (TextUtils.isEmpty(relation)) {
             showToast("关系不能为空");
         } else {
-            new MyTask(new Member(name, relation, sex, age)).execute();
+            new MyTask(new Member(name, relation, sex, Integer.valueOf(age))).execute();
         }
     }
 
@@ -94,18 +107,9 @@ public class AddMumberAty extends BaseActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            String result = null;
-//            try {
-//                HttpURLConnection conn = (HttpURLConnection) new URL(Config.getHealthUsers + "FamilyId=" + UserUtils.getFamilyId(context) + "&" + member.toString()).openConnection();
-//                conn.setRequestMethod("POST");
-//                conn.setDoOutput(true);
-//                conn.setDoInput(true);
-//                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                result = br.readLine();
-//                LogUtils.d(result);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            String url=Config.addHealthUser + "FamilyID=" + UserUtils.getFamilyId(context) + "&" + member.toString();
+            String result=UploadUtil.uploadFile(new File(Config.iconCache),url);
+            LogUtils.d(url);
             return result;
         }
 
@@ -113,6 +117,14 @@ public class AddMumberAty extends BaseActivity {
         protected void onPostExecute(Object o) {
             if (o.toString().contains("success")) {
                 showToast("联系人添加成功");
+                Matcher matcher= Pattern.compile("HealthUserID\":\"(\\d*)").matcher(o.toString());
+                File file=new File(Config.iconCache);
+                if(matcher.find()){
+                    String id=matcher.group(1);
+                    LogUtils.d(id);
+                    file.renameTo(new File(Config.cachePath+"/"+id+".png"));
+                }
+
             } else {
                 showToast("联系人添加失败");
             }
@@ -161,5 +173,11 @@ public class AddMumberAty extends BaseActivity {
         } else {
             iv.setImageResource(R.mipmap.ok);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 }

@@ -6,9 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taichangkeji.tckj.R;
+import com.taichangkeji.tckj.utils.ScreenUtil;
 
 import butterknife.ButterKnife;
 
@@ -84,20 +92,51 @@ public abstract class BaseActivity extends Activity {
 
     protected void showExitDialog(String title,String msg){
         if(mExitDialog==null){
-            mExitDialog=new AlertDialog.Builder(this)
-                    .setTitle(title)
-                    .setMessage(msg).setCancelable(false)
-                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onExit();
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            View view= LayoutInflater.from(this).inflate(R.layout.exit_dialog_layout, null);
+            mExitDialog=new Dialog(this,R.style.exit_dialog_style);
+            mExitDialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            WindowManager.LayoutParams lp = mExitDialog.getWindow().getAttributes();
+            lp.height=ScreenUtil.getScreenHeight(this)/2;
+            lp.width=ScreenUtil.getScreenWidth(this)/2;
+            mExitDialog.onWindowAttributesChanged(lp);
+            mExitDialog.setContentView(view);
+            final ImageView yes= (ImageView) view.findViewById(R.id.yes);
+            final ImageView no= (ImageView) view.findViewById(R.id.no);
+            ((TextView)view.findViewById(R.id.title)).setText(title);
+            yes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+                        yes.setImageResource(R.mipmap.dialog_yes_2);
+                    }else {
+                        yes.setImageResource(R.mipmap.dialog_yes);
+                    }
                 }
-            }).create();
+            });
+            yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mExitDialog.dismiss();
+                    onExit();
+                }
+            });
+            no.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        no.setImageResource(R.mipmap.dialog_no_2);
+                    } else {
+                        no.setImageResource(R.mipmap.dialog_no);
+                    }
+                }
+            });
+            no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mExitDialog.dismiss();
+                }
+            });
         }
         mExitDialog.show();
     }
