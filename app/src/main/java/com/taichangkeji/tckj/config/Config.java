@@ -11,7 +11,7 @@ public class Config {
 
     public static final boolean DEBUG=true;
 
-    private static final String localhost="http://192.168.1.111:8080";
+    private static final String localhost="http://120.25.144.130:8080/Server";
     public static final String getFamilyInfo=localhost+"/getInfo?";//获取家庭id和名称
     public static final String getHealthUsers=localhost+"/beitai/getHealthUsers?";//获取家属列表
     public static final String addHealthUser=localhost+"/beitai/addHealthUser?";//添加家属成员

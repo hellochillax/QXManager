@@ -36,4 +36,10 @@ public class UserUtils {
     public static String getFamilyName(Context context){
         return context.getSharedPreferences(TOKEN,0).getString("familyName",null);
     }
+    public static void setDefenceType(Context c,int t){
+        c.getSharedPreferences(TOKEN,0).edit().putInt("DefenceType",t).commit();
+    }
+    public static int getDefenceType(Context c){
+        return c.getSharedPreferences(TOKEN,0).getInt("DefenceType",8);
+    }
 }

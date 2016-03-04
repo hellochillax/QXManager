@@ -28,7 +28,6 @@
             android:layout_weight="1"
             android:focusable="true"
             android:nextFocusRight="@+id/home"
-            android:nextFocusDown="@+id/infrared_r"
             android:src="@mipmap/security_out" />
 
         <View
@@ -44,8 +43,7 @@
             android:focusable="true"
             android:nextFocusLeft="@id/out"
             android:nextFocusRight="@+id/sleep"
-            android:nextFocusDown="@+id/infrared_r"
-            android:src="@mipmap/security_home_2"/>
+            android:src="@mipmap/security_home"/>
 
         <View
             android:layout_width="0dp"
@@ -59,7 +57,6 @@
             android:layout_weight="1"
             android:focusable="true"
             android:nextFocusLeft="@id/home"
-            android:nextFocusDown="@+id/infrared_r"
             android:src="@mipmap/security_sleep" />
 
         <View
@@ -98,13 +95,11 @@
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
             <ImageView
-                android:focusable="true"
+                android:focusable="false"
                 android:id="@+id/infrared_r"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/security_switch"
-                android:nextFocusUp="@id/home"
-                android:nextFocusDown="@+id/door_r"
                 android:layout_weight="1"/>
             <View
                 android:layout_width="0dp"
@@ -128,20 +123,18 @@
                 android:id="@+id/door_l"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/security_infrared"
+                android:src="@mipmap/security_door"
                 android:layout_weight="1"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
             <ImageView
-                android:focusable="true"
+                android:focusable="false"
                 android:id="@+id/door_r"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/security_switch"
-                android:nextFocusUp="@id/infrared_r"
-                android:nextFocusDown="@+id/smoke_r"
                 android:layout_weight="1"/>
             <View
                 android:layout_width="0dp"
@@ -165,19 +158,18 @@
                 android:id="@+id/smoke_l"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/security_infrared"
+                android:src="@mipmap/security_smoke_2"
                 android:layout_weight="1"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
             <ImageView
-                android:focusable="true"
+                android:focusable="false"
                 android:id="@+id/smoke_r"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/security_switch"
-                android:nextFocusUp="@id/door_r"
+                android:src="@mipmap/security_switch_2"
                 android:layout_weight="1"/>
             <View
                 android:layout_width="0dp"
