@@ -125,6 +125,7 @@ public class SecurityAty extends BaseActivity {
                     if(info.getDeviceName().contains("A1")){
                         mInfo=info;
                         LogUtils.d(info.toString());
+                        System.out.println("dd"+EZOpenSDK.getInstance().getDetectorList(mInfo.getDeviceSerial()));
                     }
                 }
                 if(mInfo==null){

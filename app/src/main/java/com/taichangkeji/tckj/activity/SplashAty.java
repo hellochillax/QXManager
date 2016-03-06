@@ -1,6 +1,7 @@
 package com.taichangkeji.tckj.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 
@@ -11,18 +12,15 @@ import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZAccessToken;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by MAC on 15/12/26.
  */
 public class SplashAty extends BaseActivity {
-
-    Handler mHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            checkNextPage();
-        }
-    };
 
     @Override
     protected void initDatas() {
@@ -34,17 +32,7 @@ public class SplashAty extends BaseActivity {
 
     @Override
     protected void initViews() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(500);
-                    mHandler.obtainMessage().sendToTarget();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        checkNextPage();
     }
 
     private void checkNextPage() {
@@ -54,18 +42,35 @@ public class SplashAty extends BaseActivity {
             EZOpenSDK.getInstance().setAccessToken(token.getAccessToken());
             startActivity(new Intent(this, MainActivity.class));
         }else{
-            EZOpenSDK.getInstance().openLoginPage();
+            GetAccessToken();
         }
         onBackPressed();
     }
 
+    private void GetAccessToken() {
+        new AsyncTask(){
+
+            @Override
+            protected Object doInBackground(Object[] params) {
+                try {
+                    HttpsURLConnection conn= (HttpsURLConnection) new URL("").openConnection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
+
     @Override
     protected int initLayoutRes() {
-        return R.layout.aty_splash;
+        return 0;
     }
 
     @Override
     protected void onExit() {
 
     }
+
+
 }

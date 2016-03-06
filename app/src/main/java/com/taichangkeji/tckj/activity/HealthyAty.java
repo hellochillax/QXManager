@@ -164,8 +164,13 @@ public class HealthyAty extends BaseActivity {
 
     private void openMeasureAty() {
         Intent intent = new Intent(this, MeasureAty.class);
-        intent.putExtra("user",mMemberList.get(mCurrItem));
-        startActivity(intent);
+        if(mMemberList.size()>0){
+            intent.putExtra("user",mMemberList.get(mCurrItem));
+            startActivity(intent);
+        }else {
+            showToast("请先选择被测人");
+        }
+
     }
 
     private void openAddMumberAty() {

@@ -24,6 +24,13 @@ public class UserUtils {
         token.setExpire(str2);
         return token;
     }
+    //缓存用户的手机号
+    public static void setUserId(Context context,String id){
+        context.getSharedPreferences(TOKEN,0).edit().putString("user_phone",id).commit();
+    }
+    public static String getUserId(Context context){
+        return context.getSharedPreferences(TOKEN,0).getString("user_phone",null);
+    }
     public static void setFamilyId(Context context,String id){
         context.getSharedPreferences(TOKEN,0).edit().putString("familyId",id).commit();
     }

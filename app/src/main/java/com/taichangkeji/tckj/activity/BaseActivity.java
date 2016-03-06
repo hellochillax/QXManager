@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taichangkeji.tckj.R;
+import com.taichangkeji.tckj.utils.LogUtils;
 import com.taichangkeji.tckj.utils.ScreenUtil;
 
 import butterknife.ButterKnife;
@@ -35,7 +37,7 @@ public abstract class BaseActivity extends Activity {
         if (initLayoutRes() != 0) {
             setContentView(initLayoutRes());
         }else {
-            throw new NullPointerException("you may have forgot to set layout resource id on function initLayoutRes()");
+            LogUtils.e("you may have forgot to set layout resource id on function initLayoutRes()");
         }
         ButterKnife.bind(this);
         initViews();
