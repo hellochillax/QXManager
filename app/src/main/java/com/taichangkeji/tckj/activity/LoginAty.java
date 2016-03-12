@@ -28,6 +28,8 @@ import butterknife.OnClick;
 
 /**
  * Created by MAC on 16/3/6.
+ *
+ * 首次使用时出现的登录界面
  */
 public class LoginAty extends BaseActivity {
 

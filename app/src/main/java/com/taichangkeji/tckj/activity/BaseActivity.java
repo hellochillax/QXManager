@@ -24,6 +24,8 @@ import butterknife.ButterKnife;
 
 /**
  * Created by MAC on 15/12/1.
+ *
+ * 封装的基类
  */
 public abstract class BaseActivity extends Activity {
 

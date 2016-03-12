@@ -28,6 +28,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by MAC on 15/12/26.
+ *
+ * 应用第一个进入的Activity,在这里实现了accessToken的获取以及判断用户是否登陆等功能
  */
 public class SplashAty extends BaseActivity {
 

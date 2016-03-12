@@ -14,6 +14,7 @@ import java.util.UUID;
 
 /**
  * Created by MAC on 16/1/15.
+ * 上传头像的工具类
  */
 public class UploadUtil {
 

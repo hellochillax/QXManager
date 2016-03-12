@@ -16,6 +16,8 @@ import com.taichangkeji.tckj.utils.ScreenUtil;
 
 /**
  * Created by Chillax on 2015/8/14.
+ *
+ *   在图片剪辑界面中,自定义的一个View,
  */
 public class MyImageView extends ImageView {
 

@@ -1,12 +1,13 @@
 package com.taichangkeji.tckj.activity;
-
+/**
+ * 应用主界面
+ */
 
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.taichangkeji.tckj.R;
-import com.taichangkeji.tckj.service.BackService;
 import com.taichangkeji.tckj.utils.NetworkChecker;
 
 import butterknife.Bind;
@@ -47,8 +48,6 @@ public class MainActivity extends BaseActivity{
 
     @Override
     protected void initViews() {
-        intent=new Intent(this, BackService.class);
-        startService(intent);
     }
 
     Intent intent;

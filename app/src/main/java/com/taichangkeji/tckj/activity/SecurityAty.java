@@ -6,20 +6,35 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.taichangkeji.tckj.R;
+import com.taichangkeji.tckj.config.Config;
+import com.taichangkeji.tckj.model.Equipment;
 import com.taichangkeji.tckj.utils.LogUtils;
 import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.exception.BaseException;
 import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZDeviceInfo;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.OnFocusChange;
 
 /**
  * Created by MAC on 15/12/27.
+ *
+ * 安防界面
  */
 public class SecurityAty extends BaseActivity {
 
@@ -41,7 +56,10 @@ public class SecurityAty extends BaseActivity {
     ImageView mSmokeL;
     @Bind(R.id.smoke_r)
     ImageView mSmokeR;
-    EZDeviceInfo mInfo;
+
+    String Serial=null;
+
+
     int mType=8;
     Handler mHandler=new Handler(){
         @Override
@@ -80,7 +98,7 @@ public class SecurityAty extends BaseActivity {
     }
 
     public void setA1States(final int s) {
-        if(mInfo==null){
+        if(Serial==null){
             switch (s){
                 case 0:
                     change_infrared(false);
@@ -105,9 +123,9 @@ public class SecurityAty extends BaseActivity {
                  * 布防状态, IPC布防状态只有0和1，
                  A1有0:睡眠 8:在家 16:外出
                  */
-                if(mInfo!=null){
+                if(Serial!=null){
                     try {
-                        EZOpenSDK.getInstance().setDeviceDefence(mInfo.getDeviceSerial(),s);
+                        EZOpenSDK.getInstance().setDeviceDefence(Serial,s);
                         mHandler.obtainMessage(0).sendToTarget();
                     } catch (BaseException e) {
                         e.printStackTrace();
@@ -121,25 +139,39 @@ public class SecurityAty extends BaseActivity {
         }.execute();
     }
 
+    RequestQueue mQueue;
+
     private class SecurityTask extends AsyncTask<Void,Void,Void>{
 
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                List<EZDeviceInfo> deviceList= EZOpenSDK.getInstance().getDeviceList(0,10);
-                for (EZDeviceInfo info:deviceList){
-                    if(info.getDeviceName().contains("A1")){
-                        mInfo=info;
-                        LogUtils.d(info.toString());
-                        System.out.println("dd"+EZOpenSDK.getInstance().getDetectorList(mInfo.getDeviceSerial()));
+            mQueue.add(new StringRequest(Request.Method.POST, Config.getIDsAndLogin+"LoginName="+UserUtils.getUserId(context), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    LogUtils.d(response);
+                    if(response.contains("success")){
+                        Pattern p=Pattern.compile("data\":(.*)\\}");
+                        Matcher m=p.matcher(response);
+                        if(m.find()){
+                            Type type = new TypeToken<List<Equipment>>(){}.getType();
+                            List<Equipment> list=new Gson().fromJson(m.group(1), type);
+                            LogUtils.d(list.toString());
+                            for (Equipment e:list){
+                                if(e.getComment().equals("报警盒子")){
+                                    Serial=e.getSRNo();
+                                }
+                            }
+                        }
+                    }else {
+                        showToast("网络错误");
                     }
                 }
-                if(mInfo==null){
-                    mHandler.obtainMessage(1).sendToTarget();
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
                 }
-            } catch (BaseException e) {
-                e.printStackTrace();
-            }
+            }));
             return null;
         }
     }
@@ -158,6 +190,7 @@ public class SecurityAty extends BaseActivity {
                 mOut.requestFocus();
                 break;
         }
+        mQueue= Volley.newRequestQueue(context);
     }
 
     @Override

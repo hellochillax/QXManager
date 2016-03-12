@@ -35,6 +35,8 @@ import butterknife.OnFocusChange;
 
 /**
  * Created by MAC on 15/12/27.
+ *
+ * 健康测量界面
  */
 public class HealthyAty extends BaseActivity {
 

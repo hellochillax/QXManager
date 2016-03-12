@@ -7,6 +7,8 @@ import com.taichangkeji.tckj.config.Config;
 
 /**
  * Created by MAC on 15/12/12.
+ *
+ *   自定义日志,当在release版本时可以不输出日志
  */
 public class LogUtils {
     private static String TAG="LogUtils";

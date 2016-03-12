@@ -10,6 +10,7 @@ import com.videogo.openapi.bean.EZUserInfo;
 
 /**
  * Created by MAC on 15/12/26.
+ * 应用启动App
  */
 public class App extends Application {
     @Override

@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * 封装ViewHoder,有利于简化代码,提高效率
+ */
 public class ViewHolder {
 	private SparseArray<View> mViews;
 	private View mConvertView;

@@ -6,6 +6,8 @@ import com.videogo.openapi.bean.EZAccessToken;
 
 /**
  * Created by MAC on 15/12/26.
+ *
+ * 这里缓存了一些关于用户的数据
  */
 public class UserUtils {
     private static final String TOKEN="EZAccessToken";

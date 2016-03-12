@@ -17,6 +17,7 @@ import java.io.IOException;
 
 /**
  * Created by MAC on 16/1/15.
+ * 封装的一些公共方法
  */
 public class CommonUtils {
     public static void writeBitmap2File(Bitmap bitmap, String path) throws IOException {

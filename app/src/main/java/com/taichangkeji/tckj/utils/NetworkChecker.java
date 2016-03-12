@@ -7,6 +7,9 @@ import android.net.NetworkInfo;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+/**
+ * 网络状况监测
+ */
 public class NetworkChecker {
 
 	private static ConnectivityManager manager;

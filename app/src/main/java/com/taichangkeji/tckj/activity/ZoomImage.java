@@ -11,6 +11,9 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Chillax on 2015/8/14.
+ *
+ *   图片剪辑界面
+ *
  */
 public class ZoomImage extends BaseActivity {
 

@@ -2,6 +2,7 @@ package com.taichangkeji.tckj.model;
 
 /**
  * Created by MAC on 16/3/11.
+ * 亲属关系的实体类
  */
 public class Relation {
 

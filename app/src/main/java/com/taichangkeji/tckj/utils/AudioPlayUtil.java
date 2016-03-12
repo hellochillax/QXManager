@@ -24,7 +24,7 @@ import android.media.SoundPool;
 import java.util.HashMap;
 
 /**
- * 在此对类做相应的描述
+ * 这是为了进行视频播放,拷贝的萤石官方Demo里的一个文件,不用管什么作用
  * 
  * @author mlianghua
  * @Data Jun 28, 2012

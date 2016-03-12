@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.internal.Excluder;
 import com.google.gson.reflect.TypeToken;
 import com.taichangkeji.tckj.R;
 import com.taichangkeji.tckj.config.Config;
@@ -40,6 +41,9 @@ import butterknife.OnFocusChange;
 
 /**
  * Created by MAC on 16/1/14.
+ *
+ * 添加亲属成员
+ *
  */
 public class AddMumberAty extends BaseActivity {
 
@@ -80,7 +84,11 @@ public class AddMumberAty extends BaseActivity {
         } else if (TextUtils.isEmpty(relation)) {
             showToast("关系不能为空");
         } else {
-            new MyTask(new Member(name, relation, sex, Integer.valueOf(age))).execute();
+            try{
+                new MyTask(new Member(name, relation, sex, Integer.valueOf(age))).execute();
+            }catch (Exception e){
+                showToast("年龄只能是数字");
+            }
         }
     }
 

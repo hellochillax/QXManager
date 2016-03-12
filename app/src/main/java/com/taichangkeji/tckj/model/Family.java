@@ -2,6 +2,8 @@ package com.taichangkeji.tckj.model;
 
 /**
  * Created by MAC on 16/1/14.
+ *
+ * 每一个家庭的实体类
  */
 public class Family {
 

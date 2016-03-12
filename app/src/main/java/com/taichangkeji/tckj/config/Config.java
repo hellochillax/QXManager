@@ -4,6 +4,11 @@ import android.os.Environment;
 
 /**
  * Created by MAC on 15/12/26.
+ *
+ *
+ *  应用中所有的配置数据都在这里,
+ *
+ *
  */
 public class Config {
     public static final String APP_KEY="dc7a22a0c1884476abbad754bf88b0b1";
@@ -11,7 +16,7 @@ public class Config {
 
     public static final boolean DEBUG=true;
 
-    private static final String localhost="http://101.201.29.225:8080";
+    private static final String localhost="http://101.201.29.225:8080/Server";
 
     public static final String getAccessToken=localhost+"/getInfo";//获取AccessToken
     public static final String getIDsAndLogin=localhost+"/login?";//用户登录

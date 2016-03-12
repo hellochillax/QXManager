@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 /**
  * Created by MAC on 16/1/14.
+ *
+ * 家庭成员的实体类
  */
 public class Member implements Parcelable{
 
