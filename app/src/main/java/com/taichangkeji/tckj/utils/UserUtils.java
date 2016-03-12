@@ -10,19 +10,19 @@ import com.videogo.openapi.bean.EZAccessToken;
 public class UserUtils {
     private static final String TOKEN="EZAccessToken";
 
-    public static void setAccessToken(Context context,EZAccessToken token){
-        context.getSharedPreferences(TOKEN,0).edit().putString("token",token.getAccessToken()).putInt("expire",token.getExpire()).commit();
+    public static void setAccessToken(Context context,String token){
+        context.getSharedPreferences(TOKEN,0).edit().putString("token",token).commit();
     }
-    public static EZAccessToken getAccessToken(Context context){
-        EZAccessToken token=new EZAccessToken();
+    public static String getAccessToken(Context context){
         String str1=context.getSharedPreferences(TOKEN,0).getString("token",null);
-        int str2=context.getSharedPreferences(TOKEN,0).getInt("expire",0);
-        if(str1==null){
-            return null;
-        }
-        token.setAccessToken(str1);
-        token.setExpire(str2);
-        return token;
+        return str1;
+    }
+
+    public static void setCameraId(Context context,String id){
+        context.getSharedPreferences(TOKEN,0).edit().putString("camearid",id).commit();
+    }
+    public static String getCameraId(Context context){
+        return  context.getSharedPreferences(TOKEN,0).getString("camearid",null);
     }
     //缓存用户的手机号
     public static void setUserId(Context context,String id){
@@ -31,18 +31,18 @@ public class UserUtils {
     public static String getUserId(Context context){
         return context.getSharedPreferences(TOKEN,0).getString("user_phone",null);
     }
-    public static void setFamilyId(Context context,String id){
-        context.getSharedPreferences(TOKEN,0).edit().putString("familyId",id).commit();
-    }
-    public static String getFamilyId(Context context){
-        return context.getSharedPreferences(TOKEN,0).getString("familyId",null);
-    }
-    public static void setFamilyName(Context context,String name){
-        context.getSharedPreferences(TOKEN,0).edit().putString("familyName",name).commit();
-    }
-    public static String getFamilyName(Context context){
-        return context.getSharedPreferences(TOKEN,0).getString("familyName",null);
-    }
+//    public static void setFamilyId(Context context,String id){
+//        context.getSharedPreferences(TOKEN,0).edit().putString("familyId",id).commit();
+//    }
+//    public static String getFamilyId(Context context){
+//        return context.getSharedPreferences(TOKEN,0).getString("familyId",null);
+//    }
+//    public static void setFamilyName(Context context,String name){
+//        context.getSharedPreferences(TOKEN,0).edit().putString("familyName",name).commit();
+//    }
+//    public static String getFamilyName(Context context){
+//        return context.getSharedPreferences(TOKEN,0).getString("familyName",null);
+//    }
     public static void setDefenceType(Context c,int t){
         c.getSharedPreferences(TOKEN,0).edit().putInt("DefenceType",t).commit();
     }

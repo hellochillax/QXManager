@@ -8,6 +8,7 @@
         android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@android:color/transparent"
         android:layout_weight="1"
         />
     <TextView
@@ -15,5 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="80sp"
+        android:visibility="gone"
         android:textColor="#ff00ff"/>
 </LinearLayout>

@@ -5,8 +5,17 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.taichangkeji.tckj.R;
 import com.taichangkeji.tckj.config.Config;
+import com.taichangkeji.tckj.ezsdk.EZToken;
+import com.taichangkeji.tckj.utils.LogUtils;
 import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZAccessToken;
@@ -22,6 +31,8 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class SplashAty extends BaseActivity {
 
+    private RequestQueue mRequestQueue;
+
     @Override
     protected void initDatas() {
         File file=new File(Config.cachePath);
@@ -32,34 +43,57 @@ public class SplashAty extends BaseActivity {
 
     @Override
     protected void initViews() {
+        mRequestQueue =  Volley.newRequestQueue(this);
         checkNextPage();
     }
 
     private void checkNextPage() {
         //进行登录检查操作
-        EZAccessToken token=UserUtils.getAccessToken(this);
+        String token=UserUtils.getAccessToken(this);
         if(token!=null){
-            EZOpenSDK.getInstance().setAccessToken(token.getAccessToken());
-            startActivity(new Intent(this, MainActivity.class));
+            EZOpenSDK.getInstance().setAccessToken(new Gson().fromJson(token,EZToken.class).getAccessToken());
+            checkIsLogin();
         }else{
             GetAccessToken();
         }
-        onBackPressed();
     }
 
     private void GetAccessToken() {
-        new AsyncTask(){
-
+        StringRequest sq=new StringRequest(Request.Method.POST, Config.getAccessToken, new Response.Listener<String>() {
             @Override
-            protected Object doInBackground(Object[] params) {
-                try {
-                    HttpsURLConnection conn= (HttpsURLConnection) new URL("").openConnection();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onResponse(String response) {
+                LogUtils.d(response);
+                String token=new Gson().fromJson(response,EZToken.class).getAccessToken();
+//                UserUtils.setAccessToken(context,response);
+                //这里应该设置token,不带时间戳id!!!!!! accesstoken错误码:110002
+                EZOpenSDK.getInstance().setAccessToken(token);
+                checkIsLogin();
             }
-        }.execute();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LogUtils.d(error.getMessage());
+            }
+        });
+        mRequestQueue.add(sq);
+    }
+
+    private void checkIsLogin() {
+        if(UserUtils.getUserId(this)==null){
+            openLoginAty();
+        }else {
+            openMainAty();
+        }
+    }
+
+    private void openMainAty() {
+        startActivity(new Intent(this,MainActivity.class));
+        onBackPressed();
+    }
+
+    private void openLoginAty() {
+        startActivity(new Intent(this,LoginAty.class));
+        onBackPressed();
     }
 
     @Override
@@ -72,5 +106,10 @@ public class SplashAty extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onStop() {
+        // TODO Auto-generated method stub
+        super.onStop();
+        mRequestQueue.cancelAll(this);
+    }
 }

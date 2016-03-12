@@ -87,8 +87,10 @@
         <TextView
             style="@style/add_item_title_style"
             android:text="关系"/>
-        <EditText
-            android:id="@+id/relation"
+        <Spinner
+            android:id="@+id/spinner"
+            android:spinnerMode="dropdown"
+            android:focusable="true"
             style="@style/add_item_detail_style"
             />
     </LinearLayout>

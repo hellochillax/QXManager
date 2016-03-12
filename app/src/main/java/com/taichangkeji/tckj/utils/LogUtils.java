@@ -12,17 +12,17 @@ public class LogUtils {
     private static String TAG="LogUtils";
     public static void d(String log){
         if(Config.DEBUG){
-            Log.d(TAG,log);
+            Log.d(TAG,log==null?"log is null.....":log);
         }
     }
     public static void w(String log){
         if(Config.DEBUG){
-            Log.d(TAG,log);
+            Log.w(TAG,log==null?"log is null.....":log);
         }
     }
     public static void e(String log){
         if(Config.DEBUG){
-            Log.e(TAG,log);
+            Log.e(TAG,log==null?"log is null.....":log);
         }
     }
 }

@@ -10,7 +10,7 @@ public class Member implements Parcelable{
 
     private int HealthUserID;
     private String UserName;
-    private String Relations;
+    private String RelationsName;
     private String Sex;
     private int Old;
     private String FileFolder;
@@ -18,7 +18,7 @@ public class Member implements Parcelable{
 
     public Member(String userName, String relations, String sex, int old) {
         UserName = userName;
-        Relations = relations;
+        RelationsName = relations;
         Sex = sex;
         Old = old;
     }
@@ -59,11 +59,11 @@ public class Member implements Parcelable{
     }
 
     public String getRelations() {
-        return Relations;
+        return RelationsName;
     }
 
     public void setRelations(String relations) {
-        Relations = relations;
+        RelationsName = relations;
     }
 
     public String getSex() {
@@ -84,7 +84,7 @@ public class Member implements Parcelable{
 
     @Override
     public String toString() {
-        return "UserName="+UserName+"&Relations="+Relations+"&Sex="+Sex+"&Old="+Old;
+        return "UserName="+UserName+"&RelationID="+RelationsName+"&Sex="+Sex+"&Old="+Old;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class Member implements Parcelable{
         dest.writeString(UserName);
         dest.writeInt(Old);
         dest.writeString(Sex);
-        dest.writeString(Relations);
+        dest.writeString(RelationsName);
         dest.writeString(FileFolder);
     }
 

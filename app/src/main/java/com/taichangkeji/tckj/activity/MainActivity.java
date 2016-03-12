@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.taichangkeji.tckj.R;
+import com.taichangkeji.tckj.service.BackService;
+import com.taichangkeji.tckj.utils.NetworkChecker;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -38,14 +40,18 @@ public class MainActivity extends BaseActivity{
 
     @Override
     protected void initDatas() {
-
+        if(!NetworkChecker.IsNetworkAvailable(this)){
+            showToast("网络错误,请检查网络");
+        }
     }
 
     @Override
     protected void initViews() {
+        intent=new Intent(this, BackService.class);
+        startService(intent);
     }
 
-
+    Intent intent;
     @Override
     protected int initLayoutRes() {
         return R.layout.activity_main;
@@ -111,4 +117,11 @@ public class MainActivity extends BaseActivity{
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(intent!=null){
+            stopService(intent);
+        }
+    }
 }

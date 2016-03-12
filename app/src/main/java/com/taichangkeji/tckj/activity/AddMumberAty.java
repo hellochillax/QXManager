@@ -5,12 +5,23 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.taichangkeji.tckj.R;
 import com.taichangkeji.tckj.config.Config;
 import com.taichangkeji.tckj.model.Member;
+import com.taichangkeji.tckj.model.Relation;
 import com.taichangkeji.tckj.utils.CommonUtils;
 import com.taichangkeji.tckj.utils.LogUtils;
 import com.taichangkeji.tckj.utils.UploadUtil;
@@ -18,8 +29,8 @@ import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.universalimageloader.core.ImageLoader;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,26 +51,24 @@ public class AddMumberAty extends BaseActivity {
     EditText mSex;
     @Bind(R.id.age)
     EditText mAge;
-    @Bind(R.id.relation)
-    EditText mRelation;
     boolean hasSetIcon=false;
+    List<Relation> relations;
+
+    @Bind(R.id.spinner)
+    Spinner mSpinner;
 
     @OnClick(R.id.icon)
     void c_icon() {
         openPictureSelecter();
     }
-
+    ArrayAdapter<String> adapter;
 
     @OnClick(R.id.submit)
     void c_submit() {
-        mName.setText("C");
-        mSex.setText("C");
-        mAge.setText("19");
-        mRelation.setText("10");
         String name = mName.getText().toString();
         String sex = mSex.getText().toString();
         String age = mAge.getText().toString();
-        String relation = mRelation.getText().toString();
+        String relation = relations.get(mSpinner.getSelectedItemPosition()).getRelationsID();
         if (!hasSetIcon) {
             showToast("用户头像不能为空");
         } else if (TextUtils.isEmpty(name)) {
@@ -83,7 +92,26 @@ public class AddMumberAty extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        adapter=new ArrayAdapter< String>(this,android.R.layout.simple_spinner_item);
+        mSpinner.setAdapter(adapter);
+        RequestQueue queue= Volley.newRequestQueue(context);
+        queue.add(new StringRequest(Request.Method.POST,Config.getRelations, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Type type=new TypeToken<List<Relation>>(){}.getType();
+                relations=new Gson().fromJson(response, type);
+                LogUtils.d(relations.toString());
+                for (Relation relation:relations){
+                    adapter.add(relation.getRelationsName());
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showToast("网络错误");
+            }
+        }));
     }
 
     @Override
@@ -107,7 +135,7 @@ public class AddMumberAty extends BaseActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            String url=Config.addHealthUser + "FamilyID=" + UserUtils.getFamilyId(context) + "&" + member.toString();
+            String url=Config.addHealthUser + "FamilyID=" + UserUtils.getUserId(context) + "&" + member.toString();
             String result=UploadUtil.uploadFile(new File(Config.iconCache),url);
             LogUtils.d(url);
             return result;
@@ -124,6 +152,7 @@ public class AddMumberAty extends BaseActivity {
                     LogUtils.d(id);
                     file.renameTo(new File(Config.cachePath+"/"+id+".png"));
                 }
+                onBackPressed();
 
             } else {
                 showToast("联系人添加失败");

@@ -63,25 +63,33 @@
                 style="@style/large_text_style"
                 android:text="36.5"/>
             <TextView
+                android:id="@+id/result2"
+                style="@style/large_text_style"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/result3"
+                style="@style/large_text_style"
+                android:visibility="gone"/>
+            <TextView
                 android:id="@+id/type2"
                 style="@style/normal_text_style"
                 android:text="摄氏度" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@android:color/white"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"/>
-            <com.taichangkeji.tckj.cusview.MeasureIndicator
-                android:id="@+id/indicator"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
-                app:left_max_count="100"
-                app:right_max_count="100"
-                />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="4dp"-->
+                <!--android:background="@android:color/white"-->
+                <!--android:layout_marginLeft="40dp"-->
+                <!--android:layout_marginRight="40dp"/>-->
+            <!--<com.taichangkeji.tckj.cusview.MeasureIndicator-->
+                <!--android:id="@+id/indicator"-->
+                <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="40dp"-->
+                <!--android:layout_marginBottom="40dp"-->
+                <!--app:left_max_count="100"-->
+                <!--app:right_max_count="100"-->
+                <!--/>-->
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

@@ -51,6 +51,9 @@ public class SecurityAty extends BaseActivity {
                     showToast("状态转换成功");
                     switch (mType){
                         case 0:
+                            change_infrared(false);
+                            change_door(true);
+                            break;
                         case 16:
                             change_infrared(true);
                             change_door(true);
@@ -80,6 +83,9 @@ public class SecurityAty extends BaseActivity {
         if(mInfo==null){
             switch (s){
                 case 0:
+                    change_infrared(false);
+                    change_door(true);
+                    break;
                 case 16:
                     change_infrared(true);
                     change_door(true);
