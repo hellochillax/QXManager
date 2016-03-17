@@ -125,6 +125,7 @@ public class SecurityAty extends BaseActivity {
                  */
                 if(Serial!=null){
                     try {
+                        System.out.println(Serial);
                         EZOpenSDK.getInstance().setDeviceDefence(Serial,s);
                         mHandler.obtainMessage(0).sendToTarget();
                     } catch (BaseException e) {
@@ -159,6 +160,8 @@ public class SecurityAty extends BaseActivity {
                             for (Equipment e:list){
                                 if(e.getComment().equals("报警盒子")){
                                     Serial=e.getSRNo();
+                                    LogUtils.d(Serial);
+                                    setA1States(16);
                                 }
                             }
                         }
