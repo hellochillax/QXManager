@@ -172,12 +172,14 @@ public class HealthyAty extends BaseActivity {
         Intent intent = new Intent(this, MeasureAty.class);
         if(mCurrItem!=-1&&mMemberList.size()>0){
             intent.putExtra("user",mMemberList.get(mCurrItem));
-            startActivity(intent);
+            startActivityForResult(intent,5);
         }else {
             showToast("请先选择被测人");
         }
 
     }
+
+
 
     private void openAddMumberAty() {
         startActivityForResult(new Intent(this, AddMumberAty.class), 4);
@@ -187,9 +189,11 @@ public class HealthyAty extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode==RESULT_OK){
             switch (requestCode){
-                case 4:
+                case 4://添加联系人成功,刷新列表
                     new MyTask().execute();
                     break;
+                case 5://未找到接收器,返回到主界面
+                    finish();
             }
         }
     }
@@ -202,9 +206,9 @@ public class HealthyAty extends BaseActivity {
             try {
                 int id=mMemberList.get(mCurrItem).getHealthUserID();
                 HttpURLConnection conn = (HttpURLConnection)
-                        new URL(Config.delHealthUser + "FamilyID=" + UserUtils.getUserId(context)+"&HealthUserID="+id)
+                        new URL(Config.delHealthUser + "UserID=" + UserUtils.getFamilyId(context)+"&HealthUserID="+id)
                                 .openConnection();
-                LogUtils.d(Config.delHealthUser + "FamilyID=" + UserUtils.getUserId(context)+id);
+                LogUtils.d(Config.delHealthUser + "UserID=" + UserUtils.getFamilyId(context)+id);
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
@@ -234,7 +238,7 @@ public class HealthyAty extends BaseActivity {
             String result = null;
             try {
                 HttpURLConnection conn = (HttpURLConnection)
-                        new URL(Config.getHealthUsers + "FamilyID=" + UserUtils.getUserId(context))
+                        new URL(Config.getHealthUsers + "UserID=" + UserUtils.getFamilyId(context))
                                 .openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);

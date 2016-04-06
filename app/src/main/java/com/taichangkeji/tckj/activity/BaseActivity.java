@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends Activity {
 
     private Dialog mExitDialog;
+    private Dialog mAlertDialog;
     protected Activity context;
 
     @Override
@@ -93,7 +94,44 @@ public abstract class BaseActivity extends Activity {
     protected void playExitAnimation(){
         overridePendingTransition(R.anim.slide_clam,R.anim.slide_out_right);
     }
-
+    protected void showAlertDialog(String msg){
+        if(mAlertDialog==null){
+            View view= LayoutInflater.from(this).inflate(R.layout.alert_dialog_layout, null);
+            mAlertDialog=new Dialog(this,R.style.exit_dialog_style);
+            mAlertDialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            mAlertDialog.setCancelable(false);
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            WindowManager.LayoutParams lp = mAlertDialog.getWindow().getAttributes();
+            lp.height=ScreenUtil.getScreenHeight(this)/2;
+            lp.width=ScreenUtil.getScreenWidth(this)/2;
+            mAlertDialog.onWindowAttributesChanged(lp);
+            mAlertDialog.setContentView(view);
+            final ImageView yes= (ImageView) view.findViewById(R.id.yes);
+            yes.requestFocus();
+            ((TextView)view.findViewById(R.id.title)).setText(msg);
+            yes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+                        yes.setImageResource(R.mipmap.dialog_yes_2);
+                    }else {
+                        yes.setImageResource(R.mipmap.dialog_yes);
+                    }
+                }
+            });
+            yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDialog.dismiss();
+                    onExit();
+                }
+            });
+        }
+        if(!mAlertDialog.isShowing()){
+            mAlertDialog.show();
+        }
+    }
     protected void showExitDialog(String title,String msg){
         if(mExitDialog==null){
             View view= LayoutInflater.from(this).inflate(R.layout.exit_dialog_layout, null);

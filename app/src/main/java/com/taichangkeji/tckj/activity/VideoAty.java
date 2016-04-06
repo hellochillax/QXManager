@@ -1,14 +1,23 @@
 package com.taichangkeji.tckj.activity;
 
 import android.app.Application;
+import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,6 +33,7 @@ import com.taichangkeji.tckj.config.Config;
 import com.taichangkeji.tckj.model.Equipment;
 import com.taichangkeji.tckj.utils.AudioPlayUtil;
 import com.taichangkeji.tckj.utils.LogUtils;
+import com.taichangkeji.tckj.utils.ScreenUtil;
 import com.taichangkeji.tckj.utils.UserUtils;
 import com.videogo.exception.BaseException;
 import com.videogo.openapi.EZConstants;
@@ -33,7 +43,10 @@ import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.util.LocalInfo;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,8 +60,14 @@ public class VideoAty extends BaseActivity implements SurfaceHolder.Callback {
 
     EZOpenSDK mSDKInstance;
     EZPlayer mSDKPlayer;
+//    List<Equipment> mEquipmentList;
+    List<String> mEquipmentList;
+    List<EZCameraInfo> mCameraInfoList;
     EZCameraInfo mCameraInfo;
+
     SurfaceHolder mSurfaceHolder;
+
+
     Handler mPlayHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -63,6 +82,26 @@ public class VideoAty extends BaseActivity implements SurfaceHolder.Callback {
             }
         }
     };
+
+    Handler mUtilHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0://未找到摄像头设备
+                    showAlertDialog("未找到摄像头设备");
+                    break;
+                case 1://确定了要播放的Camera的Info,开始播放
+                    LogUtils.d(mCameraInfo.getCameraId() + ":" + mCameraInfo.getCameraName());
+                    mSDKPlayer = mSDKInstance.createPlayer(context, mCameraInfo.getCameraId());
+                    if (mSDKPlayer==null)return;
+                    mSDKPlayer.setHandler(mPlayHandler);
+                    mSDKPlayer.setSurfaceHold(mSurfaceHolder);
+                    mSDKPlayer.startRealPlay();
+                    break;
+            }
+        }
+    };
+
     @Bind(R.id.sv)
     SurfaceView mSurfaceView;
     @Bind(R.id.toast)
@@ -77,6 +116,8 @@ public class VideoAty extends BaseActivity implements SurfaceHolder.Callback {
     AudioPlayUtil mAudioPlayUtil;
     @Override
     protected void initViews() {
+        mCameraInfoList=new ArrayList<>();
+        mEquipmentList=new ArrayList<>();
 // 保持屏幕常亮
         mQueue= Volley.newRequestQueue(context);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -127,17 +168,54 @@ public class VideoAty extends BaseActivity implements SurfaceHolder.Callback {
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if (mCameraInfo == null) {
-                return;
+            if(mCameraInfo==null){
+                if(mCameraInfoList.size()==1){
+                    mCameraInfo=mCameraInfoList.get(0);
+                }else {
+                    showCameraChooseDialog();
+                    return;
+                }
             }
-            LogUtils.d(mCameraInfo.getCameraId() + ":" + mCameraInfo.getCameraName());
-            mSDKPlayer = mSDKInstance.createPlayer(context, mCameraInfo.getCameraId());
-            if (mSDKPlayer==null)return;
-            mSDKPlayer.setHandler(mPlayHandler);
-            mSDKPlayer.setSurfaceHold(mSurfaceHolder);
-            mSDKPlayer.startRealPlay();
+            mUtilHandler.obtainMessage(1).sendToTarget();
         }
     };
+
+    private Dialog mCameraChooseDialog;
+    private void showCameraChooseDialog() {
+        if(mCameraChooseDialog==null){
+            View view= LayoutInflater.from(this).inflate(R.layout.camera_choose_dialog, null);
+            mCameraChooseDialog=new Dialog(this,R.style.exit_dialog_style);
+            mCameraChooseDialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            mCameraChooseDialog.setCancelable(false);
+            mCameraChooseDialog.setCanceledOnTouchOutside(false);
+            WindowManager.LayoutParams lp = mCameraChooseDialog.getWindow().getAttributes();
+            lp.height= ScreenUtil.getScreenHeight(this)/3*2;
+            lp.width=ScreenUtil.getScreenWidth(this)/3*2;
+            mCameraChooseDialog.onWindowAttributesChanged(lp);
+            mCameraChooseDialog.setContentView(view);
+            ((TextView)view.findViewById(R.id.title)).setText("请选择摄像头");
+            ListView lv= (ListView) view.findViewById(R.id.list);
+            List<Map<String,String>> datas=new ArrayList<>();
+            for (EZCameraInfo info:mCameraInfoList){
+                Map<String,String> map=new HashMap<>();
+                map.put("name",info.getCameraName());
+                datas.add(map);
+            }
+            lv.setAdapter(new SimpleAdapter(VideoAty.this,datas,R.layout.camera_choose_list_item,new String[]{"name"},new int[]{R.id.name}));
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    mCameraInfo=mCameraInfoList.get(position);
+                    mCameraChooseDialog.dismiss();
+                    mUtilHandler.obtainMessage(1).sendToTarget();
+                    LogUtils.d("Chose Dialog:"+mCameraInfo);
+                }
+            });
+        }
+        mCameraChooseDialog.show();
+    }
+
 
     @Override
     protected int initLayoutRes() {
@@ -146,7 +224,7 @@ public class VideoAty extends BaseActivity implements SurfaceHolder.Callback {
 
     @Override
     protected void onExit() {
-
+        onBackPressed();
     }
 
     @Override
@@ -187,47 +265,93 @@ public class VideoAty extends BaseActivity implements SurfaceHolder.Callback {
 //        }
         @Override
         protected Object doInBackground(Object[] params) {
-            mQueue.add(new StringRequest(Request.Method.POST, Config.getIDsAndLogin+"LoginName="+UserUtils.getUserId(context), new Response.Listener<String>() {
+            mQueue.add(new StringRequest(Request.Method.POST, Config.getCameraDeviceSerial+"UserID="+UserUtils.getFamilyId(context), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     LogUtils.d(response);
                     if(response.contains("success")){
-                        Pattern p=Pattern.compile("data\":(.*)\\}");
+//                        Pattern p=Pattern.compile("data\":(.*)\\}");
+//                        Matcher m=p.matcher(response);
+//                        if(m.find()){
+//                            Type type = new TypeToken<List<Equipment>>(){}.getType();
+//                            List<Equipment> list=new Gson().fromJson(m.group(1), type);
+//                            LogUtils.d(list.toString());
+//                            mEquipmentList.clear();
+//                            for (final Equipment e:list){
+//                                if(e.getComment().equals("摄像头")){
+//                                    mEquipmentList.add(e);
+//                                }
+//                            }
+//                            if(mEquipmentList.size()>0){
+//                                try {
+//                                    new AsyncTask(){
+//
+//                                        @Override
+//                                        protected void onPostExecute(Object o) {
+//                                            handler.obtainMessage().sendToTarget();
+//                                        }
+//
+//                                        @Override
+//                                        protected Object doInBackground(Object[] params) {
+//                                            try {
+//                                                mCameraInfoList.clear();
+//                                                for (Equipment e:mEquipmentList){
+//                                                    mCameraInfoList.add(EZOpenSDK.getInstance().getCameraInfo(e.getSRNo()));
+//                                                }
+//                                                LogUtils.d(mCameraInfoList.toString());
+//                                            } catch (BaseException e3) {
+//                                                e3.printStackTrace();
+//                                                LogUtils.e("VideoAty:" + e3.getErrorCode());
+//                                                mPlayHandler.obtainMessage(0,e3.getErrorCode()+"").sendToTarget();
+//                                            }
+//                                            return null;
+//                                        }
+//                                    }.execute();
+//                                } catch (Exception e1) {
+//                                    e1.printStackTrace();
+//                                }
+//                            }else {
+//                                mUtilHandler.obtainMessage(0).sendToTarget();
+//                            }
+//                        }
+                        Pattern p=Pattern.compile("SRNo\":\"(\\d*)");
                         Matcher m=p.matcher(response);
-                        if(m.find()){
-                            Type type = new TypeToken<List<Equipment>>(){}.getType();
-                            List<Equipment> list=new Gson().fromJson(m.group(1), type);
-                            LogUtils.d(list.toString());
-                            for (final Equipment e:list){
-                                if(e.getComment().equals("网络摄像头")){
-                                    try {
-                                        new AsyncTask(){
+                        while (m.find()){
+                            mEquipmentList.add(m.group(1));
+                        }
+                        LogUtils.d(mEquipmentList.toString());
+                        if(mEquipmentList.size()>0) {
+                            try {
+                                new AsyncTask() {
 
-                                            @Override
-                                            protected void onPostExecute(Object o) {
-                                                handler.obtainMessage().sendToTarget();
-                                            }
-
-                                            @Override
-                                            protected Object doInBackground(Object[] params) {
-                                                try {
-                                                    mCameraInfo=EZOpenSDK.getInstance().getCameraInfo(e.getSRNo());
-                                                } catch (BaseException e3) {
-                                                    e3.printStackTrace();
-                                                    LogUtils.e("VideoAty:" + e3.getErrorCode());
-                                                    mPlayHandler.obtainMessage(0,e3.getErrorCode()+"").sendToTarget();
-                                                }
-                                                return null;
-                                            }
-                                        }.execute();
-                                    } catch (Exception e1) {
-                                        e1.printStackTrace();
+                                    @Override
+                                    protected void onPostExecute(Object o) {
+                                        handler.obtainMessage().sendToTarget();
                                     }
-                                }
+
+                                    @Override
+                                    protected Object doInBackground(Object[] params) {
+                                        try {
+                                            mCameraInfoList.clear();
+                                            for (String s : mEquipmentList) {
+                                                mCameraInfoList.add(EZOpenSDK.getInstance().getCameraInfo(s));
+                                            }
+                                            LogUtils.d(mCameraInfoList.toString());
+                                        } catch (BaseException e3) {
+                                            e3.printStackTrace();
+                                            LogUtils.e("VideoAty:" + e3.getErrorCode());
+                                            mPlayHandler.obtainMessage(0, e3.getErrorCode() + "").sendToTarget();
+                                        }
+                                        return null;
+                                    }
+                                }.execute();
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
                             }
                         }
-                    }else {
-                        showToast("网络错误");
+
+                    }else {//未找到相关设备
+                        mUtilHandler.obtainMessage(0).sendToTarget();
                     }
                 }
             }, new Response.ErrorListener() {

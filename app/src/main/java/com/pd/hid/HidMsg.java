@@ -496,7 +496,6 @@ public class HidMsg implements Runnable {
 			// android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_DISPLAY);
 			// //标准较重要显示优先级，对于输入事件同样适用。
 			// android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_FOREGROUND);
-
 			boolean isHandShake;
 			int openValue = -1; // 判断hid设备是否正在使用
 			Calendar c = Calendar.getInstance();
@@ -511,7 +510,6 @@ public class HidMsg implements Runnable {
 			SetTimeFeedbackSig[1] = (byte) (c.get(Calendar.MINUTE));
 			Message msg = new Message();
 			while (exit) {
-
 				if (isExit) {
 					break;
 				}

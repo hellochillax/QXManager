@@ -1,9 +1,11 @@
 package com.taichangkeji.tckj.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +36,13 @@ import javax.net.ssl.HttpsURLConnection;
 public class SplashAty extends BaseActivity {
 
     private RequestQueue mRequestQueue;
+    private Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            //网络错误
+            showAlertDialog("网络错误,请稍后重试");
+        }
+    };
 
     @Override
     protected void initDatas() {
@@ -45,6 +54,7 @@ public class SplashAty extends BaseActivity {
 
     @Override
     protected void initViews() {
+//        getWindow().getDecorView().setBackgroundColor(Color.parseColor("#297a99"));
         mRequestQueue =  Volley.newRequestQueue(this);
         checkNextPage();
     }
@@ -74,7 +84,8 @@ public class SplashAty extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LogUtils.d(error.getMessage());
+                LogUtils.d("SplashAty:"+error.getMessage());
+                mHandler.obtainMessage().sendToTarget();
             }
         });
         mRequestQueue.add(sq);
@@ -105,7 +116,7 @@ public class SplashAty extends BaseActivity {
 
     @Override
     protected void onExit() {
-
+        Process.killProcess(Process.myPid());
     }
 
     @Override

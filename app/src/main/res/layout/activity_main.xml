@@ -25,7 +25,7 @@
                 android:focusable="true"
                 android:nextFocusDown="@+id/main_community"
                 android:nextFocusRight="@+id/main_healthy"
-                android:src="@mipmap/service_highlighted"
+                android:src="@mipmap/security_highlighted"
                 android:scaleType="fitXY"/>
         </RelativeLayout>
 

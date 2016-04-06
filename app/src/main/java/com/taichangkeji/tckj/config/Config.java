@@ -14,12 +14,14 @@ public class Config {
     public static final String APP_KEY="dc7a22a0c1884476abbad754bf88b0b1";
     public static final String APP_SECRET_KEY="c6c60f76f5b03d92b6ed6e882a805f4d";
 
-    public static final boolean DEBUG=true;
+    public static final boolean DEBUG=false;
 
     private static final String localhost="http://101.201.29.225:8080/Server";
-
+//    private static final String localhost="http://192.168.1.112:8080";
     public static final String getAccessToken=localhost+"/getInfo";//获取AccessToken
     public static final String getIDsAndLogin=localhost+"/login?";//用户登录
+    public static final String getSecurityDeviceSerial=localhost+"/getMonitorSNRo?";//获取安防设备序列号
+    public static final String getCameraDeviceSerial=localhost+"/getCameraSNRo?";//获取摄像头序列号
     public static final String getRelations=localhost+"/beitai/getRelations";//获取家属列表
     public static final String getHealthUsers=localhost+"/beitai/getHealthUsers?";//获取家属列表
     public static final String addHealthUser=localhost+"/beitai/addHealthUser?";//添加家属成员

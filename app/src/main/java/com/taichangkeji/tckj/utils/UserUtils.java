@@ -20,12 +20,12 @@ public class UserUtils {
         return str1;
     }
 
-    public static void setCameraId(Context context,String id){
-        context.getSharedPreferences(TOKEN,0).edit().putString("camearid",id).commit();
-    }
-    public static String getCameraId(Context context){
-        return  context.getSharedPreferences(TOKEN,0).getString("camearid",null);
-    }
+//    public static void setCameraId(Context context,String id){
+//        context.getSharedPreferences(TOKEN,0).edit().putString("camearid",id).commit();
+//    }
+//    public static String getCameraId(Context context){
+//        return  context.getSharedPreferences(TOKEN,0).getString("camearid",null);
+//    }
     //缓存用户的手机号
     public static void setUserId(Context context,String id){
         context.getSharedPreferences(TOKEN,0).edit().putString("user_phone",id).commit();
@@ -33,12 +33,13 @@ public class UserUtils {
     public static String getUserId(Context context){
         return context.getSharedPreferences(TOKEN,0).getString("user_phone",null);
     }
-//    public static void setFamilyId(Context context,String id){
-//        context.getSharedPreferences(TOKEN,0).edit().putString("familyId",id).commit();
-//    }
-//    public static String getFamilyId(Context context){
-//        return context.getSharedPreferences(TOKEN,0).getString("familyId",null);
-//    }
+    //缓存用户的手机号对应的唯一的ID
+    public static void setFamilyId(Context context,String id){
+        context.getSharedPreferences(TOKEN,0).edit().putString("familyId",id).commit();
+    }
+    public static String getFamilyId(Context context){
+        return context.getSharedPreferences(TOKEN,0).getString("familyId",null);
+    }
 //    public static void setFamilyName(Context context,String name){
 //        context.getSharedPreferences(TOKEN,0).edit().putString("familyName",name).commit();
 //    }

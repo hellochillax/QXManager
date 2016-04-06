@@ -88,6 +88,9 @@ public class SecurityAty extends BaseActivity {
                 case 2:
                     showToast("网络错误,请重试");
                     break;
+                case 3://未找到设备时报警退出
+                    showAlertDialog("未找到相关设备信息");
+                    break;
             }
         }
     };
@@ -121,14 +124,18 @@ public class SecurityAty extends BaseActivity {
             protected Void doInBackground(Void... params) {
                 /**
                  * 布防状态, IPC布防状态只有0和1，
-                 A1有0:睡眠 8:在家 16:外出
+                    A1有0:睡眠 8:在家 16:外出
                  */
                 if(Serial!=null){
                     try {
                         System.out.println(Serial);
-                        EZOpenSDK.getInstance().setDeviceDefence(Serial,s);
+                        LogUtils.d("type:"+s);
+                        int s1=s;
+                        EZOpenSDK.getInstance().setDeviceDefence(Serial,s1);
+                        LogUtils.d("info:"+EZOpenSDK.getInstance().getDeviceInfoBySerial(Serial));
                         mHandler.obtainMessage(0).sendToTarget();
                     } catch (BaseException e) {
+                        LogUtils.d("error:"+e.getErrorCode());
                         e.printStackTrace();
                         mHandler.obtainMessage(2).sendToTarget();
                     }
@@ -146,27 +153,38 @@ public class SecurityAty extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            mQueue.add(new StringRequest(Request.Method.POST, Config.getIDsAndLogin+"LoginName="+UserUtils.getUserId(context), new Response.Listener<String>() {
+            mQueue.add(new StringRequest(Request.Method.POST, Config.getSecurityDeviceSerial+"UserID="+UserUtils.getFamilyId(context), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     LogUtils.d(response);
                     if(response.contains("success")){
-                        Pattern p=Pattern.compile("data\":(.*)\\}");
+//                        Pattern p=Pattern.compile("data\":(.*)\\}");
+//                        Matcher m=p.matcher(response);
+//                        if(m.find()){
+//                            Type type = new TypeToken<List<Equipment>>(){}.getType();
+//                            List<Equipment> list=new Gson().fromJson(m.group(1), type);
+//                            LogUtils.d(list.toString());
+//                            for (Equipment e:list){
+//                                if(e.getComment().equals("监控")){
+//                                    Serial=e.getSRNo();
+//                                    LogUtils.d(Serial);
+//                                    setA1States(16);
+//                                }
+//                            }
+//                            if(Serial==null){
+//                                mHandler.obtainMessage(3).sendToTarget();
+//                            }
+//                        }
+                        Pattern p=Pattern.compile("SRNo\":\"(\\d*)");
                         Matcher m=p.matcher(response);
                         if(m.find()){
-                            Type type = new TypeToken<List<Equipment>>(){}.getType();
-                            List<Equipment> list=new Gson().fromJson(m.group(1), type);
-                            LogUtils.d(list.toString());
-                            for (Equipment e:list){
-                                if(e.getComment().equals("报警盒子")){
-                                    Serial=e.getSRNo();
-                                    LogUtils.d(Serial);
-                                    setA1States(16);
-                                }
-                            }
+                            String serial=m.group(1);
+                            LogUtils.d("SecurityAty->Serial:"+serial);
+                            Serial=serial;
+                            setA1States(16);
                         }
-                    }else {
-                        showToast("网络错误");
+                    }else {//未找到相关设备
+                        mHandler.obtainMessage(3).sendToTarget();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -203,7 +221,7 @@ public class SecurityAty extends BaseActivity {
 
     @Override
     protected void onExit() {
-
+        finish();
     }
 
     @OnFocusChange(R.id.out) void change_out(boolean b){

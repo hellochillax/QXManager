@@ -56,6 +56,8 @@ public class MeasureAty extends BaseActivity {
 
     RequestQueue mQueue;
 
+    boolean tag=true;//仅仅判断一次是否有接收器
+
     @Override
     protected void initDatas() {
 
@@ -75,7 +77,12 @@ public class MeasureAty extends BaseActivity {
             @Override
             public void handleMessage(Message msg) {
                 String result=msg.obj.toString();
-                if(result.contains("体重测量数据")){
+                if(result.contains("未发现usb设备")){
+                    if(tag){
+                        tag=false;
+                        showAlertDialog("未发现测量接收器");
+                    }
+                }else if(result.contains("体重测量数据")){
                     mType.setText("体重");
                     mType2.setText("千克");
                     mType2.setVisibility(View.VISIBLE);
@@ -114,8 +121,6 @@ public class MeasureAty extends BaseActivity {
                 }
             }
         };
-
-
         openHid();
     }
 
@@ -237,7 +242,8 @@ public class MeasureAty extends BaseActivity {
 
     @Override
     protected void onExit() {
-
+        setResult(RESULT_OK);
+        finish();
     }
     /**
      * 打开hid设备读取
@@ -251,7 +257,7 @@ public class MeasureAty extends BaseActivity {
      * 关闭hid设备读取
      */
     private void closeHid() {
-        HidMsg.isExit = true;
+//        HidMsg.isExit = true;
         if(hidDevice != null) {
             hidDevice.exit = false;
             hidDevice = null;
@@ -278,5 +284,5 @@ public class MeasureAty extends BaseActivity {
         super.onStop();
         closeHid();
         mQueue.cancelAll(null);
-    };
+    }
 }

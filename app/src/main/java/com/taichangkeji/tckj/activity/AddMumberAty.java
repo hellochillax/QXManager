@@ -143,7 +143,7 @@ public class AddMumberAty extends BaseActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            String url=Config.addHealthUser + "FamilyID=" + UserUtils.getUserId(context) + "&" + member.toString();
+            String url=Config.addHealthUser + "UserID=" + UserUtils.getFamilyId(context) + "&" + member.toString();
             String result=UploadUtil.uploadFile(new File(Config.iconCache),url);
             LogUtils.d(url);
             return result;

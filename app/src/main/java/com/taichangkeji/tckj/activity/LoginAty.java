@@ -68,17 +68,24 @@ public class LoginAty extends BaseActivity {
                 if(response.contains("success")){
                     String str=phone;
                     UserUtils.setUserId(context,str);
-                    Pattern p=Pattern.compile("data\":(.*)\\}");
+//                    Pattern p=Pattern.compile("data\":(.*)\\}");
+//                    Matcher m=p.matcher(response);
+//                    if(m.find()){
+//                        Type type = new TypeToken<List<Equipment>>(){}.getType();
+//                        List<Equipment> list=new Gson().fromJson(m.group(1), type);
+//                        LogUtils.d(list.toString());
+//                        for (Equipment e:list){
+//                            if(e.getComment().equals("网络摄像头")){
+//                                UserUtils.setCameraId(context,e.getSRNo());
+//                            }
+//                        }
+//                    }
+                    Pattern p=Pattern.compile("UserID\":(\\d*)");
                     Matcher m=p.matcher(response);
                     if(m.find()){
-                        Type type = new TypeToken<List<Equipment>>(){}.getType();
-                        List<Equipment> list=new Gson().fromJson(m.group(1), type);
-                        LogUtils.d(list.toString());
-                        for (Equipment e:list){
-                            if(e.getComment().equals("网络摄像头")){
-                                UserUtils.setCameraId(context,e.getSRNo());
-                            }
-                        }
+                        String id=m.group(1);
+                        UserUtils.setFamilyId(LoginAty.this,id);
+                        LogUtils.d("ID of Phone"+id);
                     }
                     openMainAty();
                 }else {
